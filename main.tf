@@ -97,12 +97,14 @@ resource "aws_launch_configuration" "app_lc_v2" {
 
   user_data = <<-EOF
               #!/bin/bash
-              sudo apt-get update
-              sudo apt-get install -y nginx
-              sudo systemctl start nginx
+              sudo yum update -y
+              sudo yum install -y nginx
               sudo systemctl enable nginx
+              sudo systemctl start nginx
+              echo "<html><body><h1>Welcome to PGW server</h1></body></html>" | sudo tee /usr/share/nginx/html/index.html
               EOF
 }
+
 
 resource "aws_autoscaling_group" "app_asg" {
   desired_capacity     = var.desired_capacity
